@@ -1,1 +1,1 @@
-# namaste-react-app
+# namaste-react

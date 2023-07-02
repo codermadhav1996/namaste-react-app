@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import { restaurantList } from "../config";
 import RestaurantCards from "./RestaurantCards";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 
 
 const filterData = (searchInput, restaurantList) => {
-    const filterData =  restaurantList.filter(e=> e?.data?.name?.toLowerCase().includes(searchInput.toLowerCase()))
+    const filterData = restaurantList.filter(e => e?.data?.name?.toLowerCase().includes(searchInput.toLowerCase()))
     return filterData;
 }
 
 
 const Body = () => {
-    const [filteredRestaurants, setFilteredRestaurants ] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const [allRestaurants, setAllRestaurants] = useState([]);
     const [searchInput, setSearchInput] = useState();
 
@@ -28,24 +29,23 @@ const Body = () => {
         setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards)
     }
 
-    if(!allRestaurants) return null;
 
-    if(filteredRestaurants?.length == 0) return <h1>No Restaurant Match your Filter</h1>
+    // if(filteredRestaurants?.length == 0) return <h1>No Restaurant Match your Filter</h1>
 
-    return (allRestaurants.length === 0 ) ? <Shimmer/> :(
+    return (allRestaurants.length === 0) ? <Shimmer /> : (
         <>
             <div className="search-container">
                 <input type="text" className="search-input" placeholder="Search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
-                <button className="search-btn" 
-                onClick={(e) => {
-                const data = filterData(searchInput, allRestaurants);
-                setFilteredRestaurants(data);
-                }}>Search</button>
+                <button className="search-btn"
+                    onClick={(e) => {
+                        const data = filterData(searchInput, allRestaurants);
+                        setFilteredRestaurants(data);
+                    }}>Search</button>
 
             </div>
             <div className="restaurant-list">
                 {filteredRestaurants.map(e =>
-                    <RestaurantCards {...e.data} key={e.data.id} />
+                    <Link to={"/restaurant/" + e.data.id} ><RestaurantCards {...e.data} key={e.data.id} /></Link>
                 )}
             </div>
         </>
